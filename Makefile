@@ -1,9 +1,11 @@
 IMAGE_REPO = us.gcr.io/lexical-cider-93918
 COMMIT := $(shell git rev-parse --short HEAD)
-PRODUCT_NAME = opsis
-IMAGE_TAG = $(IMAGE_REPO)/$(PRODUCT_NAME):$(COMMIT)
+SERVICE_NAME = opsis
+SYSTEM_NAME = reporting-platform
+IMAGE_TAG = $(IMAGE_REPO)/$(SERVICE_NAME):$(COMMIT)
 TEST_COMMAND = pytest .
 LISTEN_PORT = 5000
+CLUSTER = playground
 
 
 .PHONY: build
@@ -16,22 +18,22 @@ local-test: build
 	docker run -it $(IMAGE_TAG) $(TEST_COMMAND)
 
 
-.PHONE: playground
-playground:
-	gcloud container clusters get-credentials playground
+.PHONE: cluster
+cluster:
+	gcloud container clusters get-credentials $(CLUSTER)
 
 .PHONY: deploy-team
-deploy-team: local-test playground
+deploy-team: local-test cluster
 	gcloud docker -- push $(IMAGE_TAG)
-	kubectl run $(PRODUCT_NAME) --image=$(IMAGE_TAG) --port=$(LISTEN_PORT)
-	kubectl expose deployment $(PRODUCT_NAME) --port=80 --target-port=$(LISTEN_PORT)
+	kubectl run $(SERVICE_NAME) --image=$(IMAGE_TAG) --port=$(LISTEN_PORT)
+	kubectl expose deployment $(SERVICE_NAME) --port=80 --target-port=$(LISTEN_PORT)
 
 
 .PHONY: clean-team
-clean-team: playground
+clean-team: cluster
 	-docker rmi $(IMAGE_TAG)
-	-kubectl delete deployment $(PRODUCT_NAME)
-	-kubectl delete service $(PRODUCT_NAME)
+	-kubectl delete deployment $(SERVICE_NAME)
+	-kubectl delete service $(SERVICE_NAME)
 	-rm -rf .venv
 
 
