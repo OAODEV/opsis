@@ -36,8 +36,14 @@ clean: cluster
 .PHONY: cluster
 cluster:
 ifndef CLUSTER
-	$(error CLUSTER is undefined)
+	$(error CLUSTER is undefined, what cluster to you want to use?)
 endif
+	-gcloud container clusters create $(CLUSTER) \
+		--preemptible \
+		--enable-autoscaling \
+		--num-nodes 1 \
+		--min-nodes 0 \
+		--max-nodes 5
 	gcloud container clusters get-credentials $(CLUSTER)
 
 
