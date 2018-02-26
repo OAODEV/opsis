@@ -12,4 +12,4 @@ steps:
   - "CLOUDSDK_CONTAINER_CLUSTER=integration"
 
 images:
-  - gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA
+  - gcr.io/$PROJECT_ID/opsis:$SHORT_SHA
