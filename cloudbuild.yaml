@@ -6,7 +6,7 @@ steps:
   - set
   - image
   - deployments/$REPO_NAME
-  - $REPO_NAME=gcr.io/$PROJECT_ID/$REPO:$SHORT_SHA
+  - $REPO=gcr.io/$PROJECT_ID/$REPO:$SHORT_SHA
   env:
   - "CLOUDSDK_COMPUTE_ZONE=us-central1-a"
   - "CLOUDSDK_CONTAINER_CLUSTER=integration"
