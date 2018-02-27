@@ -4,6 +4,7 @@ COMMIT := $(shell git rev-parse --short HEAD)
 IMAGE_TAG = $(IMAGE_REPO)/$(SERVICE_NAME):$(COMMIT)
 TEST_COMMAND = pytest .
 TARGET_PORT = 5000
+PATCH_FILE = patch.json
 
 
 .PHONY: build
