@@ -4,6 +4,7 @@ COMMIT := $(shell git rev-parse --short HEAD)
 IMAGE_TAG = $(IMAGE_REPO)/$(SERVICE_NAME):$(COMMIT)
 TEST_COMMAND = pytest .
 TARGET_PORT = 5000
+PATCH_FILE = patch.json
 
 
 .PHONY: build
@@ -21,7 +22,7 @@ deploy: test cluster
 	gcloud docker -- push $(IMAGE_TAG)
 	kubectl run $(SERVICE_NAME) --image=$(IMAGE_TAG) --port=$(TARGET_PORT)
 ifdef PATCH_FILE
-	kubectl patch deployment $(SERVICE_NAME) --patch '$(subst {{service_name}},$(SERVICE_NAME),$(shell cat $(PATCH_FILE)))'
+	kubectl patch deployment $(SERVICE_NAME) --patch '$(shell cat $(PATCH_FILE))'
 endif
 	kubectl expose deployment $(SERVICE_NAME) --port=80 --target-port=$(TARGET_PORT)
 
