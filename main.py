@@ -10,6 +10,7 @@ app = Flask(__name__)
 
 
 def jinja2_chart_factory(chart_script):
+
     def jinja2_chart(formatted_results, report_name, display):
         template = Template(chart_script)
         data = json.loads(formatted_results)
@@ -28,7 +29,11 @@ chart_factories = {
 
 def load_charts():
     templates_path = os.environ.get("CHART_TEMPLATES_PATH", "./charts")
-    charts = {}
+    charts = {
+        # TODO cludge, consider how builting chart types should work.
+        # Maybe environment configuration?
+        "noop": lambda x, _y, _z: x,
+    }
     for root, _, files in os.walk(templates_path):
         for f in files:
             chart_type, factory_name = f.split(".")
@@ -47,6 +52,7 @@ def chart(chart_type):
     if url is None:
         raise Exception("No formatted_results_location")
     formatted_results = requests.get(url, headers=request.headers).text
+    # TODO check response code
     charts = load_charts()
     chart = charts[chart_type]
     return chart(formatted_results, report_name, display)
@@ -54,4 +60,4 @@ def chart(chart_type):
 
 @app.route("/health")
 def health():
-    return jsonify({"health": "OK"})
+    return jsonify({"status": "200 ok"})
