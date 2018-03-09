@@ -37,6 +37,7 @@ def load_charts():
     }
     formats = {
         # "<chart type>": "<result format>",
+        "csv": "csv",
     }
     for root, _, files in os.walk(templates_path):
         for f in files:
