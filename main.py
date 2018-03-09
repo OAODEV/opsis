@@ -34,6 +34,7 @@ def load_charts():
         # TODO cludge, consider how builting chart types should work.
         # Maybe environment configuration?
         "noop": lambda x, _y, _z: x,
+        "csv": lambda x, _y, _z: x,
     }
     formats = {
         # "<chart type>": "<result format>",
@@ -75,7 +76,7 @@ def interface():
     charts, formats = load_charts()
     format_requirements = {
         # "<chartType>": "<resultFormat>",
-        # "csv": "CsvResultSet",
+        # "csv": "csv",
     }
 
     for chart_type in charts.keys():
