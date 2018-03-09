@@ -13,6 +13,7 @@ react = "*"
 requests = "*"
 pytest-flask = "*"
 "jinja2" = "*"
+python-frontmatter = "*"
 
 
 [dev-packages]

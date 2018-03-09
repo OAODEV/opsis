@@ -13,7 +13,7 @@ def test_can_pass():
 
 def test_health_endpoint(client):
     response = client.get('/health').json
-    assert response == {'health': 'OK'}
+    assert response == {'status': '200 ok'}
 
 
 def test_raw_results_chart(client, monkeypatch):
@@ -29,3 +29,8 @@ def test_raw_results_chart(client, monkeypatch):
     ).json
 
     assert response == 1
+
+
+if __name__ == "__main__":
+    import pytest
+    pytest.main()

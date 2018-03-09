@@ -2,7 +2,7 @@ IMAGE_REPO = us.gcr.io/lexical-cider-93918
 SERVICE_NAME = $(shell basename $$(pwd))
 COMMIT := $(shell git rev-parse --short HEAD)
 IMAGE_TAG = $(IMAGE_REPO)/$(SERVICE_NAME):$(COMMIT)
-TEST_COMMAND = pytest .
+TEST_COMMAND = python test_opsis.py
 TARGET_PORT = 5000
 PATCH_FILE = patch.json
 
