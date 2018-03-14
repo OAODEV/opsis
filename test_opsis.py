@@ -5,6 +5,7 @@ import os
 class MockResponse:
     def __init__(self, text):
         self.text = text
+        self.status_code = 200
 
 
 def test_can_pass():
