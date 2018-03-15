@@ -68,7 +68,7 @@ def chart(chart_type):
         raise ResultsLocationRequired
     response = requests.get(url, headers=request.headers)
     if not response.status_code == 200:
-        message = "Formatted resulst unavailable at {}. Got{} response".format(
+        message = "Formatted resulst unavailable at {}. Got {} response".format(
             url,
             response.status_code,
         )
