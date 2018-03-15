@@ -7,6 +7,13 @@ import frontmatter
 from flask import Flask, jsonify, request
 from jinja2 import Template
 
+from errors import (
+    OpsisException,
+    ResultsLocationRequired,
+    ChartNotFound,
+    ResultsUnavailable,
+)
+
 app = Flask(__name__)
 
 
@@ -58,11 +65,19 @@ def chart(chart_type):
     display = request.args.get("display")
     url = request.args.get("formatted_results_location", None)
     if url is None:
-        raise Exception("No formatted_results_location")
-    formatted_results = requests.get(url, headers=request.headers).text
-    # TODO check response code
+        raise ResultsLocationRequired
+    response = requests.get(url, headers=request.headers)
+    if not response.status_code == 200:
+        message = "Formatted resulst unavailable at {}. Got {} response".format(
+            url,
+            response.status_code,
+        )
+        raise ResultsUnavailable(message)
+    formatted_results = response.text
     charts, formats = load_charts()
-    chart = charts[chart_type]
+    chart = charts.get(chart_type, None)
+    if chart is None:
+        raise ChartNotFound(chart_type)
     return chart(formatted_results, report_name, display)
 
 
@@ -88,3 +103,10 @@ def interface():
 @app.route("/health")
 def health():
     return jsonify({"status": "200 ok"})
+
+
+@app.errorhandler(OpsisException)
+def handle_exception(e):
+    response = jsonify(e.to_dict())
+    response.status_code = e.status_code
+    return response
