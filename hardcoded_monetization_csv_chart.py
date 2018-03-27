@@ -9,6 +9,6 @@ def monetization_csv_chart(data, report_name, display):
         'Date,Demand Source,Impressions,Estimated Revenue,eCPM',
     )
     print("post", data)
-    data = json.dumps(data)
-    print("json", data)
+#    data = json.dumps(data)
+#    print("json", data)
     return data
