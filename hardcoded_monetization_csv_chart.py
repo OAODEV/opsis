@@ -9,4 +9,4 @@ def monetization_csv_chart(data, report_name, display):
     print(rows)
     rows[0] = ["Date", "Demand Source", "Impressions", "Estimated Revenue", "eCPM"]
     print(rows)
-    return "\n".join([','.join(r) for r in rows])
+    return "\r\n".join([','.join(r) for r in rows])
