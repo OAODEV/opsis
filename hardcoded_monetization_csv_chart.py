@@ -1,7 +1,7 @@
 import csv
 from io import StringIO
 
-def monetization_csv_chart(data):
+def monetization_csv_chart(data, report_name, display):
     f = StringIO(data)
     reader = csv.reader(f, delimiter=',')
     rows = list(reader)
