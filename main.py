@@ -7,6 +7,9 @@ import frontmatter
 from flask import Flask, jsonify, request
 from jinja2 import Template
 
+from hardcoded_monetization_csv_chart import monetization_csv_chart
+
+
 app = Flask(__name__)
 
 
@@ -34,7 +37,7 @@ def load_charts():
         # TODO cludge, consider how builting chart types should work.
         # Maybe environment configuration?
         "noop": lambda x, _y, _z: x,
-        "csv": lambda x, _y, _z: x,
+        "csv": monetization_csv_chart,
     }
     formats = {
         # "<chart type>": "<result format>",
